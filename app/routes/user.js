@@ -25,7 +25,7 @@ async function setUser (ctx, next) {
 
 async function login (ctx) {
   const body = ctx.request.body
-  const user = await User.findOne({ nickname: body.email })
+  const user = await User.findOne({ nickname: body.nickname })
   ctx.assert(user, 401, 'Auth failed!') // user not found
   const match = await user.comparePassword(body.password)
   ctx.assert(match, 401, 'Auth failed!') // Wrong password
@@ -34,5 +34,5 @@ async function login (ctx) {
 }
 
 async function account (ctx) {
-  ctx.body = ctx.state.user
+  ctx.body = { user: ctx.state.user }
 }
